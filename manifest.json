@@ -3,7 +3,11 @@
   "short_name": "IESModoDios",
   "description": "Aplicación para el IES Virgen de Villadiego",
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   "start_url": "./IESModoDios/index.html",
+=======
+  "start_url": "/IESModoDios/",
+>>>>>>> Stashed changes
 =======
   "start_url": "/IESModoDios/",
 >>>>>>> Stashed changes
