@@ -517,17 +517,26 @@
                 }
             });
 
-            // ===== CÓDIGO PARA PWA =====
+            // ===== CÓDIGO MEJORADO PARA PWA =====
             
             // Registrar Service Worker
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function() {
-                    navigator.serviceWorker.register('./sw.js')
+                    // Primero intentamos con la ruta absoluta para GitHub Pages
+                    navigator.serviceWorker.register('/IESModoDios/sw.js')
                         .then(function(registration) {
                             console.log('Service Worker registrado con éxito: ', registration.scope);
                         })
                         .catch(function(error) {
-                            console.log('Error al registrar el Service Worker: ', error);
+                            console.log('Error al registrar el Service Worker con ruta absoluta: ', error);
+                            // Fallback: intentar registrar en ruta relativa
+                            navigator.serviceWorker.register('./sw.js')
+                                .then(function(registration) {
+                                    console.log('Service Worker registrado con fallback: ', registration.scope);
+                                })
+                                .catch(function(fallbackError) {
+                                    console.log('Error al registrar el Service Worker con fallback: ', fallbackError);
+                                });
                         });
                 });
             }
@@ -542,7 +551,8 @@
                 // Mostrar el botón de instalación
                 installButton.style.display = 'flex';
                 
-                installButton.addEventListener('click', async () => {
+                // Configurar el evento de clic para el botón de instalación
+                installButton.onclick = async () => {
                     if (deferredPrompt) {
                         // Mostrar el prompt de instalación
                         deferredPrompt.prompt();
@@ -554,13 +564,36 @@
                         // Ocultar el botón de instalación
                         installButton.style.display = 'none';
                     }
-                });
+                };
             });
 
             // Detectar si la app está instalada
             window.addEventListener('appinstalled', (evt) => {
                 console.log('Aplicación instalada');
                 installButton.style.display = 'none';
+                // Opcional: enviar analytics o mostrar mensaje
+            });
+
+            // Verificar si ya está ejecutándose en modo standalone (instalada)
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                console.log('Running in standalone mode');
+                installButton.style.display = 'none';
+            }
+
+            // También verificar en el load si estamos en modo standalone
+            window.addEventListener('load', () => {
+                if (window.matchMedia('(display-mode: standalone)').matches) {
+                    console.log('Running in standalone mode (on load)');
+                    installButton.style.display = 'none';
+                }
+            });
+
+            // Manejar cambios en el modo de visualización
+            window.matchMedia('(display-mode: standalone)').addEventListener('change', (e) => {
+                if (e.matches) {
+                    console.log('Changed to standalone mode');
+                    installButton.style.display = 'none';
+                }
             });
         });
     </script>
