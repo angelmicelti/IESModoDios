@@ -2,7 +2,7 @@
   "name": "IES Virgen de Villadiego - Modo Dios",
   "short_name": "IESModoDios",
   "description": "Aplicación para el IES Virgen de Villadiego",
-  "start_url": "/IESModoDios/",
+  "start_url": "/IESModoDios/index.html",
   "display": "standalone",
   "background_color": "#1a2a6c",
   "theme_color": "#1a2a6c",
