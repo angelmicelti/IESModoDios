@@ -1,34 +1,39 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+	<!-- Meta tags para PWA -->
+	<meta name="application-name" content="IESModoDios">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="apple-mobile-web-app-title" content="IESModoDios">
+	<meta name="description" content="Aplicación para el IES Virgen de Villadiego">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="msapplication-config" content="/IESModoDios/browserconfig.xml">
+	<meta name="msapplication-TileColor" content="#1a2a6c">
+	<meta name="msapplication-tap-highlight" content="no">
+	<meta name="theme-color" content="#1a2a6c">
+
+	<!-- Apple Touch Icons -->
+	<link rel="apple-touch-icon" href="icons/icon-152.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+	<link rel="apple-touch-icon" sizes="167x167" href="icons/icon-152.png">
+
+	<!-- Safari pinned tab icon -->
+	<link rel="mask-icon" href="icons/icon.svg" color="#1a2a6c">
+
+	<!-- Manifest -->
+	<link rel="manifest" href="manifest.json">
+
+	<!-- Favicon -->
+	<link rel="icon" type="image/png" href="icons/icon-32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="icons/icon-16.png" sizes="16x16">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IES Virgen de Villadiego - Modo Dios</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Meta tags para PWA -->
-    <meta name="application-name" content="IESModoDios">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="IESModoDios">
-    <meta name="description" content="Aplicación para el IES Virgen de Villadiego">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="msapplication-TileColor" content="#1a2a6c">
-    <meta name="msapplication-tap-highlight" content="no">
-    <meta name="theme-color" content="#1a2a6c">
-
-    <!-- Apple Touch Icons -->
-    <link rel="apple-touch-icon" href="icons/icon-152.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
-
-    <!-- Manifest -->
-    <link rel="manifest" href="manifest.json">
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="icons/icon-32.png" sizes="32x32">
-    
     <style>
         * {
             margin: 0;
@@ -259,26 +264,56 @@
             font-size: 1.5rem;
         }
 
-        /* Botón de instalación PWA */
-        .install-button {
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 15px;
-            padding: 15px 25px;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            margin-top: 30px;
-            transition: all 0.3s ease;
+        /* Estilos para los tokens */
+        .token-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            backdrop-filter: blur(10px);
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
         }
 
-        .install-button:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-5px);
+        .token-label {
+            font-size: 1rem;
+            flex: 1;
+            text-align: left;
+        }
+
+        .token-display {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            color: white;
+            padding: 8px 12px;
+            margin: 0 10px;
+            font-family: monospace;
+            letter-spacing: 2px;
+            flex: 2;
+            text-align: center;
+        }
+
+        .copy-token {
+            background: #ffcc00;
+            color: #1a2a6c;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            flex: 0.7;
+        }
+
+        .copy-token:hover {
+            background: #ffaa00;
+            transform: scale(1.05);
+        }
+
+        .copy-token.copied {
+            background: #4CAF50;
+            color: white;
         }
 
         /* Responsive */
@@ -306,6 +341,16 @@
             
             .menu-button i {
                 font-size: 3.5rem;
+            }
+
+            .token-item {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .token-label, .token-display, .copy-token {
+                width: 100%;
+                text-align: center;
             }
         }
 
@@ -389,12 +434,6 @@
                 <span class="button-text">Tecnología</span>
             </div>
         </div>
-        
-        <!-- Botón de instalación PWA -->
-        <button id="installButton" class="install-button" style="display: none;">
-            <i class="fas fa-download"></i>
-            Instalar App
-        </button>
     </div>
 
     <!-- Modal IES -->
@@ -417,69 +456,93 @@
                     <i class="fas fa-digital-tachograph"></i>
                     <span>Plan de Actuación Digital</span>
                 </a>
-
-				<a href="https://angelmicelti.github.io/Reducciones" target="_blank" class="modal-button">
-					<i class="fas fa-clock"></i>
-					<span>Reducciones horarias</span>
-				</a>
-				
-                <a href="https://sites.google.com/iesvilladiego.com/cosasdeprofes2526/inicio" target="_blank" class="modal-button">
-                    <i class="fas fa-chalkboard-teacher"></i>
-                    <span>Cosas de Profes</span>
+                <a href="https://angelmicelti.github.io/Reducciones" target="_blank" class="modal-button">
+                    <i class="fas fa-clock"></i>
+                    <span>Reducciones horarias</span>
                 </a>
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLScOB1_CfAIxUQ88I82UFRnE0evV6BJQ4GfBEtlMGxPAyoT1Zw/viewform" target="_blank" class="modal-button">
-                    <i class="fas fa-list-alt"></i>
-                    <span>LaLiao Web</span>
-                </a>
-                <a href="https://view.genially.com/6746214396476fa875a1caab/interactive-content-plan-de-centro-ies" target="_blank" class="modal-button">
-                    <i class="fas fa-book-open"></i>
-                    <span>Plan de Centro <br> (Genial.ly)</span>
-                </a>
-				
-				<a href="https://blogsaverroes.juntadeandalucia.es/iesvirgendevilladiego/" target="_blank" class="modal-button">
-                    <i class="fas fa-globe"></i>
-                    <span>Web del IES</span>
-				</a>
-				<a href="#" class="modal-button" id="tokensIesButton">
-					<i class="fas fa-key"></i>
-					<span>Tokens IES</span>
-				</a>
-
+                <div class="modal-button" id="tokensIesButton">
+                    <i class="fas fa-key"></i>
+                    <span>Tokens IES</span>
+                </div>
             </div>
         </div>
     </div>
 
-<!-- Modal Tecnología -->
-<div class="modal" id="techModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2 class="modal-title">Tecnología</h2>
-            <button class="close-modal">&times;</button>
-        </div>
-        <div class="modal-buttons">
-            <a href="https://angelmicelti.github.io" target="_blank" class="modal-button">
-                <i class="fas fa-code-branch"></i>
-                <span>TecnoRepo</span>
-            </a>
-            <a href="https://angelmicelti.github.io/RubricasTecno" target="_blank" class="modal-button">
-                <i class="fas fa-clipboard-check"></i>
-                <span>Rúbricas</span>
-            </a>
-            <a href="https://angelmicelti.github.io/TEC4EvalInic" target="_blank" class="modal-button">
-                <i class="fas fa-file-alt"></i>
-                <span>Evaluación Inicial 4º ESO</span>
-            </a>
-			<a href="#" class="modal-button" id="tokensTecnoButton">
-				<i class="fas fa-key"></i>
-				<span>Tokens Tecno</span>
-			</a>
-
+    <!-- Modal Tecnología -->
+    <div class="modal" id="techModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Tecnología</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-buttons">
+                <a href="https://angelmicelti.github.io/RubricasTecno" target="_blank" class="modal-button">
+                    <i class="fas fa-clipboard-check"></i>
+                    <span>Rúbricas</span>
+                </a>
+                <a href="https://angelmicelti.github.io/TEC4EvalInic" target="_blank" class="modal-button">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Evaluación Inicial</span>
+                </a>
+                <div class="modal-button" id="tokensTecnoButton">
+                    <i class="fas fa-key"></i>
+                    <span>Tokens Tecno</span>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+
+    <!-- Modal Tokens IES -->
+    <div class="modal" id="tokensIesModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Tokens IES</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-buttons">
+                <div class="token-item">
+                    <span class="token-label">Reducciones horarias:</span>
+                    <span class="token-display">**********************</span>
+                    <button class="copy-token" data-token="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">Copiar</button>
+                </div>
+                <div class="token-item">
+                    <span class="token-label">Plan de Actuación Digital:</span>
+                    <span class="token-display">**********************</span>
+                    <button class="copy-token" data-token="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">Copiar</button>
+                </div>
+                <div class="token-item">
+                    <span class="token-label">Plan de Mejora:</span>
+                    <span class="token-display">**********************</span>
+                    <button class="copy-token" data-token="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">Copiar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tokens Tecnología -->
+    <div class="modal" id="tokensTecnoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Tokens Tecnología</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-buttons">
+                <div class="token-item">
+                    <span class="token-label">Rúbricas Tecnología:</span>
+                    <span class="token-display">**********************</span>
+                    <button class="copy-token" data-token="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">Copiar</button>
+                </div>
+                <div class="token-item">
+                    <span class="token-label">Evalúa Rúbricas:</span>
+                    <span class="token-display">**********************</span>
+                    <button class="copy-token" data-token="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">Copiar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="footer">
-        2025 - Ángel Millán León
+        IES Virgen de Villadiego &copy; 2023 - Modo Dios
     </div>
 
     <script>
@@ -488,13 +551,17 @@
             const mainMenu = document.getElementById('mainMenu');
             const iesButton = document.getElementById('iesButton');
             const techButton = document.getElementById('techButton');
+            const tokensIesButton = document.getElementById('tokensIesButton');
+            const tokensTecnoButton = document.getElementById('tokensTecnoButton');
+            
             const iesModal = document.getElementById('iesModal');
             const techModal = document.getElementById('techModal');
-            const closeButtons = document.querySelectorAll('.close-modal');
-            const installButton = document.getElementById('installButton');
+            const tokensIesModal = document.getElementById('tokensIesModal');
+            const tokensTecnoModal = document.getElementById('tokensTecnoModal');
             
-            let deferredPrompt;
-
+            const closeButtons = document.querySelectorAll('.close-modal');
+            const copyTokenButtons = document.querySelectorAll('.copy-token');
+            
             // Mostrar menú después de 3 segundos
             setTimeout(showMainMenu, 3000);
             
@@ -515,11 +582,21 @@
                 techModal.style.display = 'flex';
             });
             
+            tokensIesButton.addEventListener('click', function() {
+                tokensIesModal.style.display = 'flex';
+            });
+            
+            tokensTecnoButton.addEventListener('click', function() {
+                tokensTecnoModal.style.display = 'flex';
+            });
+            
             // Cerrar modales
             closeButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     iesModal.style.display = 'none';
                     techModal.style.display = 'none';
+                    tokensIesModal.style.display = 'none';
+                    tokensTecnoModal.style.display = 'none';
                 });
             });
             
@@ -531,87 +608,60 @@
                 if (event.target === techModal) {
                     techModal.style.display = 'none';
                 }
+                if (event.target === tokensIesModal) {
+                    tokensIesModal.style.display = 'none';
+                }
+                if (event.target === tokensTecnoModal) {
+                    tokensTecnoModal.style.display = 'none';
+                }
             });
-
-            // ===== CÓDIGO MEJORADO PARA PWA =====
             
-            // Registrar Service Worker
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function() {
-                    // Primero intentamos con la ruta absoluta para GitHub Pages
-                    navigator.serviceWorker.register('/IESModoDios/sw.js')
-                        .then(function(registration) {
-                            console.log('Service Worker registrado con éxito: ', registration.scope);
-                        })
-                        .catch(function(error) {
-                            console.log('Error al registrar el Service Worker con ruta absoluta: ', error);
-                            // Fallback: intentar registrar en ruta relativa
-                            navigator.serviceWorker.register('./sw.js')
-                                .then(function(registration) {
-                                    console.log('Service Worker registrado con fallback: ', registration.scope);
-                                })
-                                .catch(function(fallbackError) {
-                                    console.log('Error al registrar el Service Worker con fallback: ', fallbackError);
-                                });
-                        });
+            // Copiar tokens al portapapeles
+            copyTokenButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const token = this.getAttribute('data-token');
+                    
+                    // Usar la API del portapapeles
+                    navigator.clipboard.writeText(token).then(() => {
+                        // Cambiar temporalmente el texto del botón
+                        const originalText = this.textContent;
+                        this.textContent = 'Copiado!';
+                        this.classList.add('copied');
+                        
+                        setTimeout(() => {
+                            this.textContent = originalText;
+                            this.classList.remove('copied');
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Error al copiar el token: ', err);
+                        alert('Error al copiar el token. Inténtalo de nuevo.');
+                    });
                 });
-            }
-
-            // Manejar el evento beforeinstallprompt para mostrar el botón de instalación
-            window.addEventListener('beforeinstallprompt', (e) => {
-                console.log('beforeinstallprompt fired');
-                // Prevenir que el mini-infobar aparezca en mobile
-                e.preventDefault();
-                // Guardar el evento para poder activarlo después
-                deferredPrompt = e;
-                // Mostrar el botón de instalación
-                installButton.style.display = 'flex';
-                
-                // Configurar el evento de clic para el botón de instalación
-                installButton.onclick = async () => {
-                    if (deferredPrompt) {
-                        // Mostrar el prompt de instalación
-                        deferredPrompt.prompt();
-                        // Esperar a que el usuario responda al prompt
-                        const { outcome } = await deferredPrompt.userChoice;
-                        console.log(`User response to the install prompt: ${outcome}`);
-                        // Ya no necesitamos el prompt, limpiarlo
-                        deferredPrompt = null;
-                        // Ocultar el botón de instalación
-                        installButton.style.display = 'none';
-                    }
-                };
-            });
-
-            // Detectar si la app está instalada
-            window.addEventListener('appinstalled', (evt) => {
-                console.log('Aplicación instalada');
-                installButton.style.display = 'none';
-                // Opcional: enviar analytics o mostrar mensaje
-            });
-
-            // Verificar si ya está ejecutándose en modo standalone (instalada)
-            if (window.matchMedia('(display-mode: standalone)').matches) {
-                console.log('Running in standalone mode');
-                installButton.style.display = 'none';
-            }
-
-            // También verificar en el load si estamos en modo standalone
-            window.addEventListener('load', () => {
-                if (window.matchMedia('(display-mode: standalone)').matches) {
-                    console.log('Running in standalone mode (on load)');
-                    installButton.style.display = 'none';
-                }
-            });
-
-            // Manejar cambios en el modo de visualización
-            window.matchMedia('(display-mode: standalone)').addEventListener('change', (e) => {
-                if (e.matches) {
-                    console.log('Changed to standalone mode');
-                    installButton.style.display = 'none';
-                }
             });
         });
     </script>
+	
+	<script>
+	  // Registrar Service Worker
+	  if ('serviceWorker' in navigator) {
+		window.addEventListener('load', function() {
+		  navigator.serviceWorker.register('/IESModoDios/sw.js')
+			.then(function(registration) {
+			  console.log('Service Worker registrado con éxito: ', registration.scope);
+			})
+			.catch(function(error) {
+			  console.log('Error al registrar el Service Worker: ', error);
+			});
+		});
+	  }
+	  
+	  // Detectar si la aplicación se está ejecutando como PWA
+	  window.addEventListener('DOMContentLoaded', () => {
+		if (window.matchMedia('(display-mode: standalone)').matches) {
+		  console.log('La aplicación se está ejecutando como PWA');
+		}
+	  });
+	</script>
+	
 </body>
 </html>
