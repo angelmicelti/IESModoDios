@@ -140,6 +140,7 @@
             justify-content: center;
             gap: 40px;
             width: 100%;
+            margin-bottom: 30px;
         }
 
         .menu-button {
@@ -171,6 +172,41 @@
         }
 
         .button-text {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        /* Botón de tokens (ancho completo) */
+        .tokens-button {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            width: calc(560px + 40px); /* 280px + 280px + 40px gap */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            margin-top: 10px;
+        }
+
+        .tokens-button:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .tokens-button i {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            color: #ffcc00;
+        }
+
+        .tokens-text {
             font-size: 1.8rem;
             font-weight: 600;
         }
@@ -307,6 +343,18 @@
             .menu-button i {
                 font-size: 3.5rem;
             }
+
+            .tokens-button {
+                width: calc(480px + 20px); /* 240px + 240px + 20px gap */
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .tokens-button {
+                width: 90%;
+                max-width: 300px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -328,6 +376,11 @@
             }
             
             .menu-button {
+                width: 90%;
+                max-width: 300px;
+            }
+
+            .tokens-button {
                 width: 90%;
                 max-width: 300px;
             }
@@ -388,6 +441,12 @@
                 <i class="fas fa-laptop-code"></i>
                 <span class="button-text">Tecnología</span>
             </div>
+        </div>
+        
+        <!-- Botón de tokens (debajo, con ancho completo) -->
+        <div class="tokens-button" id="tokensButton">
+            <i class="fas fa-key"></i>
+            <span class="tokens-text">Enlace a tokens</span>
         </div>
         
         <!-- Botón de instalación PWA -->
@@ -478,6 +537,7 @@
             const mainMenu = document.getElementById('mainMenu');
             const iesButton = document.getElementById('iesButton');
             const techButton = document.getElementById('techButton');
+            const tokensButton = document.getElementById('tokensButton');
             const iesModal = document.getElementById('iesModal');
             const techModal = document.getElementById('techModal');
             const closeButtons = document.querySelectorAll('.close-modal');
@@ -503,6 +563,11 @@
             
             techButton.addEventListener('click', function() {
                 techModal.style.display = 'flex';
+            });
+
+            // Enlace directo para tokens
+            tokensButton.addEventListener('click', function() {
+                window.open('https://docs.google.com/document/d/1NS-M7Os3XIfosDZ5PojiwAdx7Q5BRebkoROPzuZf2vQ/edit?usp=sharing', '_blank');
             });
             
             // Cerrar modales
