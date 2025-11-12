@@ -1,12 +1,8 @@
-const CACHE_NAME = 'ies-mododios-v2.0.0';
+const CACHE_NAME = 'ies-mododios-v3.0.0';
 const urlsToCache = [
-  '/IESModoDios/',
-  '/IESModoDios/index.html',
-  '/IESModoDios/IESModoDios.png',
-  '/IESModoDios/manifest.json',
-  '/IESModoDios/icons/icon-192.png',
-  '/IESModoDios/icons/icon-512.png',
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
+  '/index.html',
+  './index.html',
+    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
 ];
 
 // Instalar el Service Worker
@@ -75,7 +71,7 @@ self.addEventListener('fetch', event => {
           .catch(() => {
             // Fallback para cuando no hay conexión
             if (event.request.destination === 'document') {
-              return caches.match('/IESModoDios/index.html');
+              return caches.match('./index.html');
             }
           });
       })
