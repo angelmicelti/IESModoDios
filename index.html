@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IES Virgen de Villadiego - Modo Dios</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Meta tags para PWA -->
     <meta name="application-name" content="IESModoDios">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -28,7 +28,7 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="icons/icon-32.png" sizes="32x32">
-    
+
     <style>
         * {
             margin: 0;
@@ -47,6 +47,12 @@
             align-items: center;
             overflow-x: hidden;
             position: relative;
+        }
+
+        /* Evitar scroll del fondo cuando hay modal abierto */
+        body.no-scroll {
+            overflow: hidden;
+            touch-action: none;
         }
 
         .container {
@@ -215,15 +221,15 @@
         .modal {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
+            inset: 0;
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.7);
             z-index: 1000;
             justify-content: center;
             align-items: center;
-            animation: fadeIn 0.3s ease-in-out;
+            animation: fadeIn 0.2s ease-in-out;
+            padding: 16px; /* margen para que no toque bordes en desktop */
         }
 
         .modal-content {
@@ -234,7 +240,10 @@
             max-width: 500px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
             position: relative;
-            animation: slideUp 0.4s ease-out;
+            animation: slideUp 0.35s ease-out;
+            max-height: 80vh;      /* scroll en desktop si se desborda */
+            overflow-y: auto;
+            touch-action: pan-y;
         }
 
         .modal-header {
@@ -295,6 +304,15 @@
             font-size: 1.5rem;
         }
 
+        /* Scrollbar opcional en el modal */
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        .modal-content::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+
         /* Botón de instalación PWA */
         .install-button {
             background: rgba(255, 255, 255, 0.2);
@@ -317,72 +335,58 @@
             transform: translateY(-5px);
         }
 
-        /* Responsive */
+        /* Responsive general */
         @media (max-width: 768px) {
-            .title {
-                font-size: 2.2rem;
-            }
-            
-            .subtitle {
-                font-size: 1.5rem;
-            }
-            
-            .menu-title {
-                font-size: 2rem;
-            }
-            
-            .buttons-container {
-                gap: 20px;
-            }
-            
-            .menu-button {
-                width: 240px;
-                padding: 30px 20px;
-            }
-            
-            .menu-button i {
-                font-size: 3.5rem;
-            }
-
-            .tokens-button {
-                width: calc(480px + 20px); /* 240px + 240px + 20px gap */
-                padding: 25px;
-            }
+            .title { font-size: 2.2rem; }
+            .subtitle { font-size: 1.5rem; }
+            .menu-title { font-size: 2rem; }
+            .buttons-container { gap: 20px; }
+            .menu-button { width: 240px; padding: 30px 20px; }
+            .menu-button i { font-size: 3.5rem; }
+            .tokens-button { width: calc(480px + 20px); padding: 25px; }
         }
 
         @media (max-width: 520px) {
-            .tokens-button {
-                width: 90%;
-                max-width: 300px;
-            }
+            .tokens-button { width: 90%; max-width: 300px; }
         }
 
         @media (max-width: 480px) {
-            .title {
-                font-size: 1.8rem;
-            }
-            
-            .subtitle {
-                font-size: 1.2rem;
-            }
-            
-            .menu-title {
-                font-size: 1.6rem;
-            }
-            
-            .buttons-container {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .menu-button {
-                width: 90%;
-                max-width: 300px;
-            }
+            .title { font-size: 1.8rem; }
+            .subtitle { font-size: 1.2rem; }
+            .menu-title { font-size: 1.6rem; }
+            .buttons-container { flex-direction: column; align-items: center; }
+            .menu-button { width: 90%; max-width: 300px; }
+            .tokens-button { width: 90%; max-width: 300px; }
+        }
 
-            .tokens-button {
-                width: 90%;
-                max-width: 300px;
+        /* Versión responsive de modal: estilo pantalla completa y slide desde abajo */
+        @media (max-width: 600px) {
+            .modal {
+                align-items: flex-end; /* modal pegado abajo */
+                padding: 0;            /* ocupa todo */
+            }
+            .modal-content {
+                width: 100%;
+                height: 92vh;                  /* casi toda la pantalla */
+                max-height: 92vh;
+                border-radius: 20px 20px 0 0;  /* hoja que sube */
+                padding: 20px;
+                animation: slideUpFull 0.35s ease-out;
+                /* respetar notch/áreas seguras */
+                padding-bottom: max(20px, env(safe-area-inset-bottom));
+            }
+            .modal-header {
+                position: sticky;
+                top: 0;
+                background: linear-gradient(135deg, #2c3e50, #4a6491);
+                z-index: 10;
+                padding-top: 8px;
+                margin-bottom: 16px;
+            }
+            .modal-buttons {
+                overflow-y: auto;
+                max-height: calc(92vh - 90px); /* resto bajo header */
+                -webkit-overflow-scrolling: touch;
             }
         }
 
@@ -393,12 +397,21 @@
         }
 
         @keyframes slideUp {
-            from { 
+            from {
                 opacity: 0;
                 transform: translateY(50px);
             }
-            to { 
+            to {
                 opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUpFull {
+            from {
+                transform: translateY(100%);
+            }
+            to {
                 transform: translateY(0);
             }
         }
@@ -442,13 +455,13 @@
                 <span class="button-text">Tecnología</span>
             </div>
         </div>
-        
+
         <!-- Botón de tokens (debajo, con ancho completo) -->
         <div class="tokens-button" id="tokensButton">
             <i class="fas fa-key"></i>
             <span class="tokens-text">Enlace a tokens</span>
         </div>
-        
+
         <!-- Botón de instalación PWA -->
         <button id="installButton" class="install-button" style="display: none;">
             <i class="fas fa-download"></i>
@@ -461,7 +474,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title">IES Virgen de Villadiego</h2>
-                <button class="close-modal">&times;</button>
+                <button class="close-modal" aria-label="Cerrar">&times;</button>
             </div>
             <div class="modal-buttons">
                 <a href="https://angelmicelti.github.io/PlanesIES" target="_blank" class="modal-button">
@@ -476,12 +489,10 @@
                     <i class="fas fa-digital-tachograph"></i>
                     <span>Plan de Actuación Digital</span>
                 </a>
-
-				<a href="https://angelmicelti.github.io/Reducciones" target="_blank" class="modal-button">
-					<i class="fas fa-clock"></i>
-					<span>Reducciones horarias</span>
-				</a>
-				
+                <a href="https://angelmicelti.github.io/Reducciones" target="_blank" class="modal-button">
+                    <i class="fas fa-clock"></i>
+                    <span>Reducciones horarias</span>
+                </a>
                 <a href="https://sites.google.com/iesvilladiego.com/cosasdeprofes2526/inicio" target="_blank" class="modal-button">
                     <i class="fas fa-chalkboard-teacher"></i>
                     <span>Cosas de Profes</span>
@@ -490,51 +501,49 @@
                     <i class="fas fa-list-alt"></i>
                     <span>LaLiao Web</span>
                 </a>
-				<a href="https://angelmicelti.github.io/PlanesProgramas" target="_blank" class="modal-button">
-                <i class="fas fa-project-diagram"></i>
-                <span>Planes y Programas del IES</span>
-				</a>
+                <a href="https://angelmicelti.github.io/PlanesProgramas" target="_blank" class="modal-button">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Planes y Programas del IES</span>
+                </a>
                 <a href="https://view.genially.com/6746214396476fa875a1caab/interactive-content-plan-de-centro-ies" target="_blank" class="modal-button">
                     <i class="fas fa-book-open"></i>
                     <span>Plan de Centro <br> (Genial.ly)</span>
                 </a>
-				
-				<a href="https://blogsaverroes.juntadeandalucia.es/iesvirgendevilladiego/" target="_blank" class="modal-button">
+                <a href="https://blogsaverroes.juntadeandalucia.es/iesvirgendevilladiego/" target="_blank" class="modal-button">
                     <i class="fas fa-globe"></i>
                     <span>Web del IES</span>
-				</a>
+                </a>
             </div>
         </div>
     </div>
 
-<!-- Modal Tecnología -->
-<div class="modal" id="techModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2 class="modal-title">Tecnología</h2>
-            <button class="close-modal">&times;</button>
-        </div>
-        <div class="modal-buttons">
-            <a href="https://angelmicelti.github.io" target="_blank" class="modal-button">
-                <i class="fas fa-code-branch"></i>
-                <span>TecnoRepo</span>
-            </a>
-            <a href="https://angelmicelti.github.io/RubricasTecno" target="_blank" class="modal-button">
-                <i class="fas fa-clipboard-check"></i>
-                <span>Rúbricas</span>
-            </a>
-            <a href="https://angelmicelti.github.io/TEC4EvalInic" target="_blank" class="modal-button">
-                <i class="fas fa-file-alt"></i>
-                <span>Evaluación Inicial 4º ESO</span>
-            </a>
-			<a href="https://angelmicelti.github.io/TableroKanban/index.html" target="_blank" class="modal-button">
-                <i class="fas fa-columns"></i>
-                <span>Tablero Kanban</span>
-            </a>			
-			
+    <!-- Modal Tecnología -->
+    <div class="modal" id="techModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Tecnología</h2>
+                <button class="close-modal" aria-label="Cerrar">&times;</button>
+            </div>
+            <div class="modal-buttons">
+                <a href="https://angelmicelti.github.io" target="_blank" class="modal-button">
+                    <i class="fas fa-code-branch"></i>
+                    <span>TecnoRepo</span>
+                </a>
+                <a href="https://angelmicelti.github.io/RubricasTecno" target="_blank" class="modal-button">
+                    <i class="fas fa-clipboard-check"></i>
+                    <span>Rúbricas</span>
+                </a>
+                <a href="https://angelmicelti.github.io/TEC4EvalInic" target="_blank" class="modal-button">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Evaluación Inicial 4º ESO</span>
+                </a>
+                <a href="https://angelmicelti.github.io/TableroKanban/index.html" target="_blank" class="modal-button">
+                    <i class="fas fa-columns"></i>
+                    <span>Tablero Kanban</span>
+                </a>
+            </div>
         </div>
     </div>
-</div>
 
     <div class="footer">
         2025 - Ángel Millán León
@@ -551,65 +560,68 @@
             const techModal = document.getElementById('techModal');
             const closeButtons = document.querySelectorAll('.close-modal');
             const installButton = document.getElementById('installButton');
-            
+
             let deferredPrompt;
 
             // Mostrar menú después de 3 segundos
             setTimeout(showMainMenu, 3000);
-            
+
             // Mostrar menú al hacer clic en cualquier lugar
             splashScreen.addEventListener('click', showMainMenu);
-            
+
             function showMainMenu() {
                 splashScreen.style.display = 'none';
                 mainMenu.style.display = 'flex';
             }
-            
-            // Abrir modales
+
+            // Abrir modales (añadir no-scroll al body)
             iesButton.addEventListener('click', function() {
                 iesModal.style.display = 'flex';
+                document.body.classList.add('no-scroll');
             });
-            
+
             techButton.addEventListener('click', function() {
                 techModal.style.display = 'flex';
+                document.body.classList.add('no-scroll');
             });
 
             // Enlace directo para tokens
             tokensButton.addEventListener('click', function() {
                 window.open('https://docs.google.com/document/d/1NS-M7Os3XIfosDZ5PojiwAdx7Q5BRebkoROPzuZf2vQ/edit?usp=sharing', '_blank');
             });
-            
-            // Cerrar modales
+
+            // Cerrar modales (quitar no-scroll del body)
             closeButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     iesModal.style.display = 'none';
                     techModal.style.display = 'none';
+                    document.body.classList.remove('no-scroll');
                 });
             });
-            
+
             // Cerrar modal al hacer clic fuera del contenido
             window.addEventListener('click', function(event) {
                 if (event.target === iesModal) {
                     iesModal.style.display = 'none';
+                    document.body.classList.remove('no-scroll');
                 }
                 if (event.target === techModal) {
                     techModal.style.display = 'none';
+                    document.body.classList.remove('no-scroll');
                 }
             });
 
-            // ===== CÓDIGO MEJORADO PARA PWA =====
-            
+            // ===== PWA =====
+
             // Registrar Service Worker
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function() {
-                    // Primero intentamos con la ruta absoluta para GitHub Pages
                     navigator.serviceWorker.register('/IESModoDios/sw.js')
                         .then(function(registration) {
                             console.log('Service Worker registrado con éxito: ', registration.scope);
                         })
                         .catch(function(error) {
                             console.log('Error al registrar el Service Worker con ruta absoluta: ', error);
-                            // Fallback: intentar registrar en ruta relativa
                             navigator.serviceWorker.register('./sw.js')
                                 .then(function(registration) {
                                     console.log('Service Worker registrado con fallback: ', registration.scope);
@@ -621,59 +633,39 @@
                 });
             }
 
-            // Manejar el evento beforeinstallprompt para mostrar el botón de instalación
+            // Manejar beforeinstallprompt
             window.addEventListener('beforeinstallprompt', (e) => {
-                console.log('beforeinstallprompt fired');
-                // Prevenir que el mini-infobar aparezca en mobile
                 e.preventDefault();
-                // Guardar el evento para poder activarlo después
                 deferredPrompt = e;
-                // Mostrar el botón de instalación
                 installButton.style.display = 'flex';
-                
-                // Configurar el evento de clic para el botón de instalación
+
                 installButton.onclick = async () => {
                     if (deferredPrompt) {
-                        // Mostrar el prompt de instalación
                         deferredPrompt.prompt();
-                        // Esperar a que el usuario responda al prompt
                         const { outcome } = await deferredPrompt.userChoice;
                         console.log(`User response to the install prompt: ${outcome}`);
-                        // Ya no necesitamos el prompt, limpiarlo
                         deferredPrompt = null;
-                        // Ocultar el botón de instalación
                         installButton.style.display = 'none';
                     }
                 };
             });
 
-            // Detectar si la app está instalada
-            window.addEventListener('appinstalled', (evt) => {
+            // Detectar instalación
+            window.addEventListener('appinstalled', () => {
                 console.log('Aplicación instalada');
                 installButton.style.display = 'none';
-                // Opcional: enviar analytics o mostrar mensaje
             });
 
-            // Verificar si ya está ejecutándose en modo standalone (instalada)
-            if (window.matchMedia('(display-mode: standalone)').matches) {
-                console.log('Running in standalone mode');
-                installButton.style.display = 'none';
-            }
-
-            // También verificar en el load si estamos en modo standalone
-            window.addEventListener('load', () => {
+            // Ocultar botón si ya está en standalone
+            function hideInstallIfStandalone() {
                 if (window.matchMedia('(display-mode: standalone)').matches) {
-                    console.log('Running in standalone mode (on load)');
                     installButton.style.display = 'none';
                 }
-            });
-
-            // Manejar cambios en el modo de visualización
+            }
+            hideInstallIfStandalone();
+            window.addEventListener('load', hideInstallIfStandalone);
             window.matchMedia('(display-mode: standalone)').addEventListener('change', (e) => {
-                if (e.matches) {
-                    console.log('Changed to standalone mode');
-                    installButton.style.display = 'none';
-                }
+                if (e.matches) installButton.style.display = 'none';
             });
         });
     </script>
