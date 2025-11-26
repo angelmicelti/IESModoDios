@@ -450,7 +450,11 @@
                 <i class="fas fa-school"></i>
                 <span class="button-text">IES</span>
             </div>
-            <div class="menu-button" id="techButton">
+            <div class="menu-button" id="departamentoButton">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <span class="button-text">Departamento</span>
+            </div>
+            <div class="menu-button" id="tecnologiaButton">
                 <i class="fas fa-laptop-code"></i>
                 <span class="button-text">Tecnología</span>
             </div>
@@ -525,11 +529,11 @@
         </div>
     </div>
 
-    <!-- Modal Tecnología -->
-    <div class="modal" id="techModal">
+    <!-- Modal Departamento -->
+    <div class="modal" id="departamentoModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">Tecnología</h2>
+                <h2 class="modal-title">Departamento</h2>
                 <button class="close-modal" aria-label="Cerrar">&times;</button>
             </div>
             <div class="modal-buttons">
@@ -572,6 +576,26 @@
         </div>
     </div>
 
+    <!-- Modal Tecnología -->
+    <div class="modal" id="tecnologiaModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Tecnología</h2>
+                <button class="close-modal" aria-label="Cerrar">&times;</button>
+            </div>
+            <div class="modal-buttons">
+                <a href="https://angelmicelti.github.io" target="_blank" class="modal-button">
+                    <i class="fas fa-globe"></i>
+                    <span>Web del Departamento de Tecnología</span>
+                </a>
+                <a href="https://angelmicelti.github.io/AppCalculosElectronica/" target="_blank" class="modal-button">
+                    <i class="fas fa-calculator"></i>
+                    <span>Cálculos electrónicos</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <div class="footer">
         2025 - Ángel Millán León
     </div>
@@ -581,10 +605,12 @@
             const splashScreen = document.getElementById('splashScreen');
             const mainMenu = document.getElementById('mainMenu');
             const iesButton = document.getElementById('iesButton');
-            const techButton = document.getElementById('techButton');
+            const departamentoButton = document.getElementById('departamentoButton');
+            const tecnologiaButton = document.getElementById('tecnologiaButton');
             const tokensButton = document.getElementById('tokensButton');
             const iesModal = document.getElementById('iesModal');
-            const techModal = document.getElementById('techModal');
+            const departamentoModal = document.getElementById('departamentoModal');
+            const tecnologiaModal = document.getElementById('tecnologiaModal');
             const closeButtons = document.querySelectorAll('.close-modal');
             const installButton = document.getElementById('installButton');
 
@@ -607,8 +633,13 @@
                 document.body.classList.add('no-scroll');
             });
 
-            techButton.addEventListener('click', function() {
-                techModal.style.display = 'flex';
+            departamentoButton.addEventListener('click', function() {
+                departamentoModal.style.display = 'flex';
+                document.body.classList.add('no-scroll');
+            });
+
+            tecnologiaButton.addEventListener('click', function() {
+                tecnologiaModal.style.display = 'flex';
                 document.body.classList.add('no-scroll');
             });
 
@@ -621,7 +652,8 @@
             closeButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     iesModal.style.display = 'none';
-                    techModal.style.display = 'none';
+                    departamentoModal.style.display = 'none';
+                    tecnologiaModal.style.display = 'none';
                     document.body.classList.remove('no-scroll');
                 });
             });
@@ -632,8 +664,12 @@
                     iesModal.style.display = 'none';
                     document.body.classList.remove('no-scroll');
                 }
-                if (event.target === techModal) {
-                    techModal.style.display = 'none';
+                if (event.target === departamentoModal) {
+                    departamentoModal.style.display = 'none';
+                    document.body.classList.remove('no-scroll');
+                }
+                if (event.target === tecnologiaModal) {
+                    tecnologiaModal.style.display = 'none';
                     document.body.classList.remove('no-scroll');
                 }
             });
