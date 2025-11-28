@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ies-mododios-v3.7.0';
+const CACHE_NAME = 'ies-mododios-v4.0.0';
 const urlsToCache = [
   '/index.html',
   './index.html',
