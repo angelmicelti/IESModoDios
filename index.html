@@ -6,7 +6,6 @@
     <title>IES Virgen de Villadiego - Modo Dios</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Meta tags para PWA -->
     <meta name="application-name" content="IESModoDios">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -18,15 +17,12 @@
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="theme-color" content="#1a2a6c">
 
-    <!-- Apple Touch Icons -->
     <link rel="apple-touch-icon" href="icons/icon-152.png">
     <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
 
-    <!-- Manifest -->
     <link rel="manifest" href="manifest.json">
 
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="icons/icon-32.png" sizes="32x32">
 
     <style>
@@ -430,7 +426,6 @@
     </style>
 </head>
 <body>
-    <!-- Pantalla de inicio -->
     <div class="splash-screen" id="splashScreen">
         <div class="logo">
             <img src="IESModoDios.png" alt="IES Virgen de Villadiego" onerror="this.style.display='none'">
@@ -442,7 +437,6 @@
         </div>
     </div>
 
-    <!-- Menú principal -->
     <div class="main-menu" id="mainMenu">
         <h1 class="menu-title">Selecciona una opción</h1>
         <div class="buttons-container">
@@ -460,20 +454,17 @@
             </div>
         </div>
 
-        <!-- Botón de tokens (debajo, con ancho completo) -->
         <div class="tokens-button" id="tokensButton">
             <i class="fas fa-key"></i>
             <span class="tokens-text">Enlace a tokens</span>
         </div>
 
-        <!-- Botón de instalación PWA -->
         <button id="installButton" class="install-button" style="display: none;">
             <i class="fas fa-download"></i>
             Instalar App
         </button>
     </div>
 
-    <!-- Modal IES -->
     <div class="modal" id="iesModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -529,7 +520,6 @@
         </div>
     </div>
 
-    <!-- Modal Departamento -->
     <div class="modal" id="departamentoModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -562,24 +552,19 @@
                 </a>
                 
                 <a href="https://angelmicelti.github.io/ISUStoPRA/" target="_blank" class="modal-button" data-keyword="ISUStoPRA" aria-label="ISUStoPRA conversor de formatos">
-                    <!-- Icono SVG: dos documentos y una flecha indicando conversión -->
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:#ffcc00" aria-hidden="true" focusable="false">
-                        <!-- Documento origen -->
                         <rect x="2" y="3" width="8.5" height="12.5" rx="1.2" ry="1.2" stroke="currentColor" stroke-width="1.4" fill="none"/>
                         <path d="M4 6h5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
                         <path d="M4 9h5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                        <!-- Documento destino -->
                         <rect x="13.5" y="8" width="8.5" height="12.5" rx="1.2" ry="1.2" stroke="currentColor" stroke-width="1.4" fill="none"/>
                         <path d="M15.5 11h5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
                         <path d="M15.5 14h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                        <!-- Flecha de conversión -->
                         <path d="M11 12.5h2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
                         <path d="M12.8 11.2l1.7 1.3-1.7 1.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
                     </svg>
                     <span>ISUStoPRA — Conversor</span>
                 </a>
 
-                <!-- Nuevo botón PRA (V1) -->
                 <a href="https://angelmicelti.github.io/PRAV1/" target="_blank" class="modal-button">
                     <i class="fas fa-book-open"></i>
                     <span>PRA (V1)</span>
@@ -588,23 +573,14 @@
         </div>
     </div>
 
-    <!-- Modal Tecnología -->
-	<div class="modal" id="tecnologiaModal">
+    <div class="modal" id="tecnologiaModal">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h2 class="modal-title">Tecnología</h2>
 				<button class="close-modal" aria-label="Cerrar">&times;</button>
 			</div>
 			<div class="modal-buttons">
-				<a href="https://angelmicelti.github.io" target="_blank" class="modal-button">
-					<i class="fas fa-globe"></i>
-					<span>Web del Departamento de Tecnología</span>
-				</a>
-				<a href="https://tecnovilladiego.blogspot.com" target="_blank" class="modal-button">
-					<i class="fas fa-blog"></i>
-					<span>Blog de Tecnología del IES</span>
-				</a>
-
+				
 				<a href="https://angelmicelti.github.io/AppCalculosElectronica/" target="_blank" class="modal-button">
 					<i class="fas fa-calculator"></i>
 					<span>Cálculos electrónicos</span>
@@ -620,10 +596,25 @@
 					<span>Transistores BJT</span>
 				</a>
 
+                <a href="https://angelmicelti.github.io/ColeccionProblemasEDI4TEC" target="_blank" class="modal-button">
+					<i class="fas fa-wave-square"></i>
+					<span>Problemas de Electrónica Digital</span>
+				</a>
+
 				<a href="https://angelmicelti.github.io/SimuladorClemas/" target="_blank" class="modal-button">
 					<i class="fas fa-plug"></i>
 					<span>Simulador clemas</span>
 				</a>
+
+				<a href="https://angelmicelti.github.io" target="_blank" class="modal-button">
+					<i class="fas fa-globe"></i>
+					<span>Web del Departamento de Tecnología</span>
+				</a>
+				<a href="https://tecnovilladiego.blogspot.com" target="_blank" class="modal-button">
+					<i class="fas fa-blog"></i>
+					<span>Blog de Tecnología del IES</span>
+				</a>
+
 			</div>
 		</div>
 	</div>
