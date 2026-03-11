@@ -725,25 +725,18 @@
 
             // ===== PWA =====
 
-            // Registrar Service Worker
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function() {
-                    navigator.serviceWorker.register('/IESModoDios/sw.js')
-                        .then(function(registration) {
-                            console.log('Service Worker registrado con éxito: ', registration.scope);
-                        })
-                        .catch(function(error) {
-                            console.log('Error al registrar el Service Worker con ruta absoluta: ', error);
-                            navigator.serviceWorker.register('./sw.js')
-                                .then(function(registration) {
-                                    console.log('Service Worker registrado con fallback: ', registration.scope);
-                                })
-                                .catch(function(fallbackError) {
-                                    console.log('Error al registrar el Service Worker con fallback: ', fallbackError);
-                                });
-                        });
-                });
-            }
+			 // Registrar Service Worker (versión simplificada y robusta)
+			if ('serviceWorker' in navigator) {
+				window.addEventListener('load', function() {
+					navigator.serviceWorker.register('sw.js')
+						.then(function(registration) {
+							console.log('Service Worker registrado con éxito: ', registration.scope);
+						})
+						.catch(function(error) {
+							console.log('Error al registrar el Service Worker: ', error);
+						});
+				});
+			}
 
             // Manejar beforeinstallprompt
             window.addEventListener('beforeinstallprompt', (e) => {
