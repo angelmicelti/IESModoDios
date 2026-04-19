@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ies-mododios-v10.7'; // Actualiza la versión para forzar la activación
+const CACHE_NAME = 'ies-mododios-v10.8'; // Actualiza la versión para forzar la activación
 const urlsToCache = [
   './index.html',
   './manifest.json',
