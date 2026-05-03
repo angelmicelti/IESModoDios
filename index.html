@@ -2,10 +2,11 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>IES Virgen de Villadiego - Modo Dios</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <!-- PWA meta -->
     <meta name="application-name" content="IESModoDios">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -20,9 +21,7 @@
     <link rel="apple-touch-icon" href="icons/icon-152.png">
     <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
-
     <link rel="manifest" href="manifest.json">
-
     <link rel="icon" type="image/png" href="icons/icon-32.png" sizes="32x32">
 
     <style>
@@ -175,7 +174,7 @@
         }
 
         .loading-bar {
-            width: 320px;
+            width: min(320px, 75vw);
             height: 8px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
@@ -193,6 +192,172 @@
             border-radius: 10px;
             animation: loading 3s linear forwards, shimmer 2s linear infinite;
             box-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
+        }
+
+        /* ===== LOGIN (autenticación) ===== */
+        .auth-container {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            width: 100%;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .auth-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(51, 65, 85, 0.85));
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 45px 35px;
+            width: 100%;
+            max-width: 420px;
+            min-width: 0;
+            text-align: center;
+            box-shadow: var(--shadow-lg), 0 0 80px rgba(99, 102, 241, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(99, 102, 241, 0.08), transparent, rgba(236, 72, 153, 0.08), transparent);
+            animation: rotate 8s linear infinite;
+            pointer-events: none;
+        }
+
+        .auth-card h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--accent), #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+        }
+
+        .auth-card .auth-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .auth-card input {
+            width: 100%;
+            padding: 16px 20px;
+            margin: 10px 0;
+            background: rgba(255, 255, 255, 0.06);
+            border: 2px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            color: #ffffff;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+
+        .auth-card input::placeholder {
+            color: rgba(255, 255, 255, 0.45);
+        }
+
+        .auth-card input:focus {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15), 0 4px 16px rgba(99, 102, 241, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .auth-card button[type="submit"] {
+            width: 100%;
+            padding: 16px;
+            margin-top: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.15rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+        }
+
+        .auth-card button[type="submit"]::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .auth-card button[type="submit"]:hover::before {
+            left: 100%;
+        }
+
+        .auth-card button[type="submit"]:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 32px rgba(99, 102, 241, 0.5);
+        }
+
+        .auth-card button[type="submit"]:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .error-msg {
+            color: #ff8a8a;
+            font-size: 0.9rem;
+            margin-top: 16px;
+            position: relative;
+            min-height: 1.2em;
+        }
+
+        /* ===== Botón cerrar sesión ===== */
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 14px 28px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 1rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(239, 68, 68, 0.2);
+        }
+
+        .logout-btn:active {
+            transform: translateY(-1px) scale(0.98);
         }
 
         /* Menú principal */
@@ -219,7 +384,7 @@
 
         .buttons-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 30px;
             width: 100%;
             max-width: 900px;
@@ -232,7 +397,7 @@
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             border: 1px solid var(--glass-border);
             border-radius: 24px;
-            padding: 45px 30px;
+            padding: 45px 24px;
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: flex;
@@ -242,6 +407,16 @@
             box-shadow: var(--shadow-md);
             position: relative;
             overflow: hidden;
+            min-width: 0;
+        }
+
+        .button-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            overflow-wrap: break-word;
+            word-break: break-word;
+            text-align: center;
         }
 
         .menu-button::before {
@@ -284,12 +459,6 @@
             transform: scale(1.1) rotate(5deg);
         }
 
-        .button-text {
-            font-size: 1.6rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
         /* Botón de tokens (ancho completo) */
         .tokens-button {
             background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(236, 72, 153, 0.2));
@@ -297,7 +466,7 @@
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             border: 1px solid var(--glass-border);
             border-radius: 24px;
-            padding: 35px;
+            padding: 30px 20px;
             width: 100%;
             max-width: 580px;
             cursor: pointer;
@@ -310,6 +479,7 @@
             margin-top: 10px;
             position: relative;
             overflow: hidden;
+            min-width: 0;
         }
 
         .tokens-button::before {
@@ -348,9 +518,12 @@
         }
 
         .tokens-text {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 600;
             color: var(--text-primary);
+            overflow-wrap: break-word;
+            word-break: break-word;
+            text-align: center;
         }
 
         /* Modales */
@@ -436,19 +609,33 @@
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 16px;
-            padding: 20px 22px;
+            padding: 16px 18px;
             color: var(--text-primary);
-            font-size: 1.15rem;
+            font-size: 1.05rem;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             text-align: left;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
             text-decoration: none;
             position: relative;
             overflow: hidden;
+            min-width: 0;
+        }
+
+        .modal-button i,
+        .modal-button svg {
+            flex-shrink: 0;
+        }
+
+        .modal-button span {
+            min-width: 0;
+            overflow-wrap: break-word;
+            word-break: break-word;
+            hyphens: auto;
+            -webkit-hyphens: auto;
         }
 
         .modal-button::before {
@@ -542,36 +729,80 @@
 
         /* Responsive general */
         @media (max-width: 768px) {
-            .title { font-size: 2.5rem; }
-            .subtitle { font-size: 1.6rem; }
-            .menu-title { font-size: 2.2rem; }
-            .buttons-container { 
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 20px; 
+            .title { font-size: 2.2rem; }
+            .subtitle { font-size: 1.5rem; }
+            .menu-title { font-size: 2rem; margin-bottom: 35px; }
+            .buttons-container {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 18px;
+                padding: 0 16px;
             }
-            .menu-button { padding: 35px 20px; }
-            .menu-button i { font-size: 3.5rem; }
-            .button-text { font-size: 1.4rem; }
+            .menu-button { padding: 30px 16px; }
+            .menu-button i { font-size: 3rem; }
+            .button-text { font-size: 1.3rem; }
             .tokens-button { max-width: 100%; }
+            .tokens-button i { font-size: 3rem; }
+            .tokens-text { font-size: 1.3rem; }
+            .modal-button { padding: 14px 16px; font-size: 1rem; gap: 12px; }
+            .modal-button i { font-size: 1.4rem; min-width: 24px; }
+            .install-button { padding: 16px 24px; font-size: 1.05rem; margin-top: 25px; }
+            .logout-btn { padding: 12px 24px; font-size: 0.95rem; margin-top: 25px; }
         }
 
         @media (max-width: 520px) {
             .tokens-button { width: 100%; max-width: 100%; }
+            .buttons-container { gap: 14px; }
+            .menu-button { padding: 25px 14px; }
+            .menu-button i { font-size: 2.8rem; margin-bottom: 14px; }
+            .button-text { font-size: 1.2rem; }
         }
 
         @media (max-width: 480px) {
-            .title { font-size: 2rem; }
-            .subtitle { font-size: 1.4rem; }
-            .menu-title { font-size: 1.8rem; }
-            .buttons-container { 
-                grid-template-columns: 1fr; 
-                gap: 18px;
+            .title { font-size: 1.8rem; }
+            .subtitle { font-size: 1.3rem; }
+            .menu-title { font-size: 1.6rem; margin-bottom: 28px; }
+            .buttons-container {
+                grid-template-columns: 1fr;
+                gap: 14px;
             }
             .menu-button { width: 100%; max-width: 100%; }
             .tokens-button { width: 100%; max-width: 100%; }
-            .logo { width: 180px; height: 180px; }
-            .modal-content { padding: 25px; }
-            .modal-title { font-size: 1.6rem; }
+            .logo { width: 150px; height: 150px; margin-bottom: 28px; }
+            .modal-content { padding: 20px 16px; }
+            .modal-title { font-size: 1.5rem; }
+            .modal-button { padding: 13px 14px; font-size: 0.95rem; border-radius: 14px; }
+            .modal-button i { font-size: 1.3rem; min-width: 22px; }
+            .modal-button svg { width: 20px; height: 20px; }
+            .modal-header { margin-bottom: 20px; padding-bottom: 14px; }
+            .modal-buttons { gap: 10px; }
+            .auth-card { padding: 30px 20px; border-radius: 22px; }
+            .auth-card h2 { font-size: 1.5rem; }
+            .auth-card input { padding: 14px 16px; font-size: 0.95rem; }
+            .auth-card button[type="submit"] { padding: 14px; font-size: 1.05rem; }
+            .install-button { width: 100%; max-width: 100%; justify-content: center; }
+            .logout-btn { width: 100%; max-width: 100%; justify-content: center; }
+            .main-menu { padding: 0 16px; }
+        }
+
+        /* Pantallas muy pequeñas (< 360px) */
+        @media (max-width: 360px) {
+            .title { font-size: 1.5rem; }
+            .subtitle { font-size: 1.1rem; }
+            .menu-title { font-size: 1.4rem; }
+            .logo { width: 120px; height: 120px; margin-bottom: 20px; }
+            .menu-button { padding: 20px 12px; border-radius: 18px; }
+            .menu-button i { font-size: 2.4rem; margin-bottom: 10px; }
+            .button-text { font-size: 1.1rem; }
+            .tokens-button { padding: 22px 16px; border-radius: 18px; }
+            .tokens-button i { font-size: 2.4rem; margin-bottom: 10px; }
+            .tokens-text { font-size: 1.1rem; }
+            .modal-button { padding: 12px 12px; font-size: 0.9rem; gap: 10px; border-radius: 12px; }
+            .modal-button i { font-size: 1.2rem; min-width: 20px; }
+            .auth-card { padding: 24px 16px; border-radius: 18px; }
+            .auth-card h2 { font-size: 1.3rem; }
+            .auth-card .auth-subtitle { font-size: 0.85rem; }
+            .auth-card input { padding: 12px 14px; font-size: 0.9rem; border-radius: 14px; }
+            .auth-card button[type="submit"] { padding: 12px; font-size: 1rem; border-radius: 14px; }
         }
 
         /* Versión responsive de modal: estilo pantalla completa y slide desde abajo */
@@ -584,23 +815,23 @@
                 width: 100%;
                 height: 92vh;
                 max-height: 92vh;
-                border-radius: 28px 28px 0 0;
-                padding: 25px 20px;
+                border-radius: 24px 24px 0 0;
+                padding: 20px 16px;
                 animation: slideUpFull 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-                padding-bottom: max(25px, env(safe-area-inset-bottom));
+                padding-bottom: max(20px, env(safe-area-inset-bottom));
             }
             .modal-header {
                 position: sticky;
                 top: 0;
                 background: linear-gradient(135deg, rgba(30, 41, 59, 0.98), rgba(51, 65, 85, 0.98));
                 z-index: 10;
-                padding-top: 10px;
-                margin-bottom: 20px;
+                padding: 8px 0;
+                margin-bottom: 16px;
                 backdrop-filter: blur(10px);
             }
             .modal-buttons {
                 overflow-y: auto;
-                max-height: calc(92vh - 100px);
+                max-height: calc(92vh - 90px);
                 -webkit-overflow-scrolling: touch;
             }
         }
@@ -706,6 +937,7 @@
     </style>
 </head>
 <body>
+    <!-- Pantalla de Splash -->
     <div class="splash-screen" id="splashScreen">
         <div class="logo">
             <img src="IESModoDios.png" alt="IES Virgen de Villadiego" onerror="this.style.display='none'">
@@ -717,6 +949,21 @@
         </div>
     </div>
 
+    <!-- Formulario de Login -->
+    <div class="auth-container" id="loginContainer">
+        <div class="auth-card">
+            <h2><i class="fas fa-shield-alt"></i> Acceso restringido</h2>
+            <p class="auth-subtitle">Introduce tus credenciales para continuar</p>
+            <form id="loginForm">
+                <input type="text" id="loginUsername" placeholder="Usuario" required autocomplete="username">
+                <input type="password" id="loginPassword" placeholder="Contraseña" required autocomplete="current-password">
+                <button type="submit"><i class="fas fa-sign-in-alt"></i> Iniciar sesión</button>
+                <div id="errorMsgLogin" class="error-msg"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Menú principal (protegido) -->
     <div class="main-menu" id="mainMenu">
         <h1 class="menu-title">Selecciona una opción</h1>
         <div class="buttons-container">
@@ -743,8 +990,13 @@
             <i class="fas fa-download"></i>
             Instalar App
         </button>
+
+        <button id="logoutBtn" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+        </button>
     </div>
 
+    <!-- MODAL IES -->
     <div class="modal" id="iesModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -757,8 +1009,8 @@
                     <span>Ñ+𝝅</span>
                 </a>
                 <a href="https://angelmicelti.github.io/AACCEE/" target="_blank" class="modal-button">
-                <i class="fas fa-running"></i>
-                <span>Actividades Extraescolares</span>
+                    <i class="fas fa-running"></i>
+                    <span>Actividades Extraescolares</span>
                 </a>
                 <a href="https://angelmicelti.github.io/PlanDeMejora" target="_blank" class="modal-button">
                     <i class="fas fa-tools"></i>
@@ -772,11 +1024,11 @@
                     <i class="fas fa-clock"></i>
                     <span>Reducciones horarias</span>
                 </a>
-                                <a href="https://angelmicelti.github.io/AppGestionPermisosP27/" target="_blank" class="modal-button">
+                <a href="https://angelmicelti.github.io/AppGestionPermisosP27/" target="_blank" class="modal-button">
                     <i class="fas fa-file-signature"></i>
                     <span>Gestión de Permisos</span>
                 </a>
-                                <a href="https://sites.google.com/iesvilladiego.com/cosasdeprofes2526/inicio" target="_blank" class="modal-button">
+                <a href="https://sites.google.com/iesvilladiego.com/cosasdeprofes2526/inicio" target="_blank" class="modal-button">
                     <i class="fas fa-chalkboard-teacher"></i>
                     <span>Cosas de Profes</span>
                 </a>
@@ -789,8 +1041,8 @@
                     <span>Planes y Programas del IES</span>
                 </a>
                 <a href="https://angelmicelti.github.io/PlanDeCentro/" target="_blank" class="modal-button">
-                <i class="fas fa-mobile-alt"></i>
-                <span>Plan de Centro (app)</span>
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>Plan de Centro (app)</span>
                 </a>
                 <a href="https://view.genially.com/6746214396476fa875a1caab/interactive-content-plan-de-centro-ies" target="_blank" class="modal-button">
                     <i class="fas fa-book-open"></i>
@@ -804,6 +1056,7 @@
         </div>
     </div>
 
+    <!-- MODAL Departamento -->
     <div class="modal" id="departamentoModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -814,43 +1067,39 @@
                 <a href="https://angelmicelti.github.io" target="_blank" class="modal-button">
                     <i class="fas fa-code-branch"></i>
                     <span>TecnoRepo</span>
+                </a>
                 <a href="https://angelmicelti.github.io/AppEvaluaTodaTecno/" target="_blank" class="modal-button">
                     <i class="fas fa-square-poll-vertical"></i>
                     <span>Evaluación Tecnología 4º</span>
                 </a>
+                <a href="https://angelmicelti.github.io/AppSorteoNombresAlumnos" target="_blank" class="modal-button">
+                    <i class="fas fa-random"></i>
+                    <span>Sorteo App</span>
                 </a>
-                                <a href="https://angelmicelti.github.io/AppSorteoNombresAlumnos" target="_blank" class="modal-button">
-                                        <i class="fas fa-random"></i>
-                                        <span>Sorteo App</span>
-                                </a>
-                                <a href="https://angelmicelti.github.io/AppCalificaActividadesTEC4/" target="_blank" class="modal-button">
-                                        <i class="fas fa-clipboard-list"></i>
-                                        <span>Evalúa Actividades TEC4</span>
-                                </a>
-                                <a href="https://angelmicelti.github.io/AppCalificaActividadesMateriaGeneral" target="_blank" class="modal-button">
-                                        <i class="fas fa-edit"></i>
-                                        <span>Evaluación materia genérica</span>
-                                </a>
+                <a href="https://angelmicelti.github.io/AppCalificaActividadesTEC4/" target="_blank" class="modal-button">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>Evalúa Actividades TEC4</span>
+                </a>
+                <a href="https://angelmicelti.github.io/AppCalificaActividadesMateriaGeneral" target="_blank" class="modal-button">
+                    <i class="fas fa-edit"></i>
+                    <span>Evaluación materia genérica</span>
+                </a>
                 <a href="https://angelmicelti.github.io/RubricasTecno" target="_blank" class="modal-button">
                     <i class="fas fa-clipboard-check"></i>
                     <span>Rúbricas</span>
                 </a>
-                                
-                                <a href="https://angelmicelti.github.io/TEC4EvalInic" target="_blank" class="modal-button">
+                <a href="https://angelmicelti.github.io/TEC4EvalInic" target="_blank" class="modal-button">
                     <i class="fas fa-file-alt"></i>
                     <span>Evaluación Inicial TEC4</span>
                 </a>
-                                
-                                <a href="https://angelmicelti.github.io/EvalCompEspTEC4" target="_blank" class="modal-button">
+                <a href="https://angelmicelti.github.io/EvalCompEspTEC4" target="_blank" class="modal-button">
                     <i class="fas fa-bullseye"></i>
                     <span>Evaluación Competencias Específicas TEC4</span>
-                                </a>
-                                
+                </a>
                 <a href="https://angelmicelti.github.io/TableroKanban/index.html" target="_blank" class="modal-button">
                     <i class="fas fa-columns"></i>
                     <span>Tablero Kanban</span>
                 </a>
-                
                 <a href="https://angelmicelti.github.io/ISUStoPRA/" target="_blank" class="modal-button" data-keyword="ISUStoPRA" aria-label="ISUStoPRA conversor de formatos">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:#ffcc00" aria-hidden="true" focusable="false">
                         <rect x="2" y="3" width="8.5" height="12.5" rx="1.2" ry="1.2" stroke="currentColor" stroke-width="1.4" fill="none"/>
@@ -864,12 +1113,10 @@
                     </svg>
                     <span>ISUStoPRA — Conversor</span>
                 </a>
-
-                                <a href="https://angelmicelti.github.io/AppSeguimientoPRA/" target="_blank" class="modal-button">
-                                        <i class="fas fa-tasks"></i>
-                                        <span>Seguimiento PRA</span>
-                                </a>
-
+                <a href="https://angelmicelti.github.io/AppSeguimientoPRA/" target="_blank" class="modal-button">
+                    <i class="fas fa-tasks"></i>
+                    <span>Seguimiento PRA</span>
+                </a>
                 <a href="https://angelmicelti.github.io/PRAV1/" target="_blank" class="modal-button">
                     <i class="fas fa-book-open"></i>
                     <span>PRA (V1)</span>
@@ -878,83 +1125,69 @@
         </div>
     </div>
 
+    <!-- MODAL Tecnología -->
     <div class="modal" id="tecnologiaModal">
-                <div class="modal-content">
-                        <div class="modal-header">
-                                <h2 class="modal-title">Tecnología</h2>
-                                <button class="close-modal" aria-label="Cerrar">&times;</button>
-                        </div>
-                        <div class="modal-buttons">
-                                
-                                <a href="https://angelmicelti.github.io/AppCalculosElectronica/" target="_blank" class="modal-button">
-                                        <i class="fas fa-calculator"></i>
-                                        <span>Cálculos electrónicos</span>
-                                </a>
-
-                                <a href="https://angelmicelti.github.io/ProblemasEAN/index.html" target="_blank" class="modal-button">
-                                        <i class="fas fa-diagram-project"></i>
-                                        <span>Problemas de Electrónica Analógica</span>
-                                </a>
-                                
-                                <a href="https://angelmicelti.github.io/Transistor/" target="_blank" class="modal-button">
-                                        <i class="fas fa-microchip"></i>
-                                        <span>Transistores BJT</span>
-                                </a>
-
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Tecnología</h2>
+                <button class="close-modal" aria-label="Cerrar">&times;</button>
+            </div>
+            <div class="modal-buttons">
+                <a href="https://angelmicelti.github.io/AppCalculosElectronica/" target="_blank" class="modal-button">
+                    <i class="fas fa-calculator"></i>
+                    <span>Cálculos electrónicos</span>
+                </a>
+                <a href="https://angelmicelti.github.io/ProblemasEAN/index.html" target="_blank" class="modal-button">
+                    <i class="fas fa-diagram-project"></i>
+                    <span>Problemas de Electrónica Analógica</span>
+                </a>
+                <a href="https://angelmicelti.github.io/Transistor/" target="_blank" class="modal-button">
+                    <i class="fas fa-microchip"></i>
+                    <span>Transistores BJT</span>
+                </a>
                 <a href="https://angelmicelti.github.io/ColeccionProblemasEDI4TEC" target="_blank" class="modal-button">
-                                        <i class="fas fa-wave-square"></i>
-                                        <span>Problemas de Electrónica Digital</span>
-                                </a>
-                                
-                                
-                                <a href="https://angelmicelti.github.io/TablaVerdadKarnaugh/" target="_blank" class="modal-button">
-                                        <i class="fas fa-table"></i>
-                                        <span>Funciones lógicas</span>
-                                </a>
-                                
-                                <a href="https://angelmicelti.github.io/AppClemasV2/" target="_blank" class="modal-button">
-                                        <i class="fas fa-microchip"></i>
-                                        <span>Montaje de circuitos en clemas (V2)</span>
-                                </a>
-
-                                <a href="https://angelmicelti.github.io/SimuladorClemas/" target="_blank" class="modal-button">
-                                        <i class="fas fa-plug"></i>
-                                        <span>Montaje de circuitos en clemas (V1)</span>
-                                </a>
-
-</a>
-
-                                <a href="https://angelmicelti.github.io/ArduinoblocksPracticas" target="_blank" class="modal-button">
-                                        <i class="fas fa-microchip"></i>
-                                        <span>Prácticas Arduinoblocks</span>
-                                </a>
-
-                                <a href="https://angelmicelti.github.io/LEDEmisorReceptor" target="_blank" class="modal-button">
-                                        <i class="fas fa-lightbulb"></i>
-                                        <span>LED por control remoto</span>
-                                </a>
-
-
-
-
-                                <a href="https://angelmicelti.github.io" target="_blank" class="modal-button">
-                                        <i class="fas fa-globe"></i>
-                                        <span>Web del Departamento de Tecnología</span>
-                                </a>
-                                <a href="https://tecnovilladiego.blogspot.com" target="_blank" class="modal-button">
-                                        <i class="fas fa-blog"></i>
-                                        <span>Blog de Tecnología del IES</span>
-                                
-                        </div>
-                </div>
+                    <i class="fas fa-wave-square"></i>
+                    <span>Problemas de Electrónica Digital</span>
+                </a>
+                <a href="https://angelmicelti.github.io/TablaVerdadKarnaugh/" target="_blank" class="modal-button">
+                    <i class="fas fa-table"></i>
+                    <span>Funciones lógicas</span>
+                </a>
+                <a href="https://angelmicelti.github.io/AppClemasV2/" target="_blank" class="modal-button">
+                    <i class="fas fa-microchip"></i>
+                    <span>Montaje de circuitos en clemas (V2)</span>
+                </a>
+                <a href="https://angelmicelti.github.io/SimuladorClemas/" target="_blank" class="modal-button">
+                    <i class="fas fa-plug"></i>
+                    <span>Montaje de circuitos en clemas (V1)</span>
+                </a>
+                <a href="https://angelmicelti.github.io/ArduinoblocksPracticas" target="_blank" class="modal-button">
+                    <i class="fas fa-microchip"></i>
+                    <span>Prácticas Arduinoblocks</span>
+                </a>
+                <a href="https://angelmicelti.github.io/LEDEmisorReceptor" target="_blank" class="modal-button">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>LED por control remoto</span>
+                </a>
+                <a href="https://angelmicelti.github.io" target="_blank" class="modal-button">
+                    <i class="fas fa-globe"></i>
+                    <span>Web del Departamento de Tecnología</span>
+                </a>
+                <a href="https://tecnovilladiego.blogspot.com" target="_blank" class="modal-button">
+                    <i class="fas fa-blog"></i>
+                    <span>Blog de Tecnología del IES</span>
+                </a>
+            </div>
         </div>
-    <div class="footer">
-        2026 - Ángel Millán León
     </div>
 
+    <div class="footer">2026 - Ángel Millán León</div>
+
+    <!-- ===== SCRIPT PRINCIPAL (no Firebase aún — UI y PWA) ===== -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const splashScreen = document.getElementById('splashScreen');
+            const loginContainer = document.getElementById('loginContainer');
             const mainMenu = document.getElementById('mainMenu');
             const iesButton = document.getElementById('iesButton');
             const departamentoButton = document.getElementById('departamentoButton');
@@ -965,21 +1198,47 @@
             const tecnologiaModal = document.getElementById('tecnologiaModal');
             const closeButtons = document.querySelectorAll('.close-modal');
             const installButton = document.getElementById('installButton');
+            const logoutBtn = document.getElementById('logoutBtn');
 
             let deferredPrompt;
+            let splashDismissed = false;
 
-            // Mostrar menú después de 3 segundos
-            setTimeout(showMainMenu, 3000);
+            // ===== Función para mostrar login (después del splash) =====
+            function showLogin() {
+                if (splashDismissed) return;
+                splashDismissed = true;
+                splashScreen.style.display = 'none';
+                // loginContainer será mostrado por Firebase onAuthStateChanged si no hay usuario
+            }
 
-            // Mostrar menú al hacer clic en cualquier lugar
-            splashScreen.addEventListener('click', showMainMenu);
-
+            // ===== Función para mostrar menú principal (usuario autenticado) =====
             function showMainMenu() {
                 splashScreen.style.display = 'none';
+                loginContainer.style.display = 'none';
                 mainMenu.style.display = 'flex';
             }
 
-            // Abrir modales (añadir no-scroll al body)
+            // ===== Función para mostrar login (usuario no autenticado) =====
+            function showAuth() {
+                splashScreen.style.display = 'none';
+                loginContainer.style.display = 'flex';
+                mainMenu.style.display = 'none';
+            }
+
+            // Exponer funciones globalmente para que Firebase las use
+            window._showMainMenu = showMainMenu;
+            window._showAuth = showAuth;
+
+            // Mostrar menú o login después de 3 segundos
+            setTimeout(showLogin, 3000);
+
+            // Mostrar al hacer clic en el splash
+            splashScreen.addEventListener('click', showLogin);
+
+            // ===== Cerrar sesión =====
+            // logoutBtn se gestiona desde el módulo Firebase (window._signOut)
+
+            // ===== Abrir modales =====
             iesButton.addEventListener('click', function() {
                 iesModal.style.display = 'flex';
                 document.body.classList.add('no-scroll');
@@ -1000,7 +1259,7 @@
                 window.open('https://docs.google.com/document/d/1NS-M7Os3XIfosDZ5PojiwAdx7Q5BRebkoROPzuZf2vQ/edit?usp=sharing', '_blank');
             });
 
-            // Cerrar modales (quitar no-scroll del body)
+            // Cerrar modales
             closeButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     iesModal.style.display = 'none';
@@ -1027,21 +1286,18 @@
             });
 
             // ===== PWA =====
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('sw.js')
+                        .then(function(registration) {
+                            console.log('Service Worker registrado: ', registration.scope);
+                        })
+                        .catch(function(error) {
+                            console.log('Error SW: ', error);
+                        });
+                });
+            }
 
-                         // Registrar Service Worker (versión simplificada y robusta)
-                        if ('serviceWorker' in navigator) {
-                                window.addEventListener('load', function() {
-                                        navigator.serviceWorker.register('sw.js')
-                                                .then(function(registration) {
-                                                        console.log('Service Worker registrado con éxito: ', registration.scope);
-                                                })
-                                                .catch(function(error) {
-                                                        console.log('Error al registrar el Service Worker: ', error);
-                                                });
-                                });
-                        }
-
-            // Manejar beforeinstallprompt
             window.addEventListener('beforeinstallprompt', (e) => {
                 e.preventDefault();
                 deferredPrompt = e;
@@ -1051,20 +1307,18 @@
                     if (deferredPrompt) {
                         deferredPrompt.prompt();
                         const { outcome } = await deferredPrompt.userChoice;
-                        console.log(`User response to the install prompt: ${outcome}`);
+                        console.log('Resultado instalación:', outcome);
                         deferredPrompt = null;
                         installButton.style.display = 'none';
                     }
                 };
             });
 
-            // Detectar instalación
             window.addEventListener('appinstalled', () => {
-                console.log('Aplicación instalada');
+                console.log('App instalada');
                 installButton.style.display = 'none';
             });
 
-            // Ocultar botón si ya está en standalone
             function hideInstallIfStandalone() {
                 if (window.matchMedia('(display-mode: standalone)').matches) {
                     installButton.style.display = 'none';
@@ -1075,6 +1329,99 @@
             window.matchMedia('(display-mode: standalone)').addEventListener('change', (e) => {
                 if (e.matches) installButton.style.display = 'none';
             });
+        });
+    </script>
+
+    <!-- ===== FIREBASE AUTH (módulo) ===== -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyD25nRAHxcrDGc3fCTYqNA2N0cff5eaaVk",
+            authDomain: "iesmododios.firebaseapp.com",
+            projectId: "iesmododios",
+            storageBucket: "iesmododios.firebasestorage.app",
+            messagingSenderId: "673481236558",
+            appId: "1:673481236558:web:5bd17310542ea041b5a31f",
+            measurementId: "G-BVX0XX2Q9S"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const FAKE_DOMAIN = "@iesmododios.local";
+
+        // Esperar a que el DOM esté listo
+        function waitForDOM() {
+            return new Promise((resolve) => {
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', resolve);
+                } else {
+                    resolve();
+                }
+            });
+        }
+
+        await waitForDOM();
+
+        const loginForm = document.getElementById('loginForm');
+        const errorMsgLogin = document.getElementById('errorMsgLogin');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // Estado de autenticación
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Usuario autenticado → mostrar menú principal
+                window._showMainMenu();
+            } else {
+                // No autenticado → mostrar login
+                window._showAuth();
+            }
+        });
+
+        // Login
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            errorMsgLogin.textContent = '';
+
+            if (!username) {
+                errorMsgLogin.textContent = 'Introduce un nombre de usuario.';
+                return;
+            }
+
+            const email = username + FAKE_DOMAIN;
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                loginForm.reset();
+            } catch (error) {
+                let msg = '';
+                switch (error.code) {
+                    case 'auth/user-not-found':
+                        msg = 'Usuario no autorizado.';
+                        break;
+                    case 'auth/wrong-password':
+                        msg = 'Contraseña incorrecta.';
+                        break;
+                    case 'auth/invalid-email':
+                        msg = 'Formato de usuario no válido.';
+                        break;
+                    case 'auth/invalid-credential':
+                        msg = 'Usuario o contraseña incorrectos.';
+                        break;
+                    default:
+                        msg = 'Error de acceso. Contacta al administrador.';
+                }
+                errorMsgLogin.textContent = msg;
+            }
+        });
+
+        // Cerrar sesión
+        logoutBtn.addEventListener('click', async () => {
+            await signOut(auth);
         });
     </script>
 </body>
