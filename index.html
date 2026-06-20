@@ -459,72 +459,6 @@
             transform: scale(1.1) rotate(5deg);
         }
 
-        /* Botón de tokens (ancho completo) */
-        .tokens-button {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(236, 72, 153, 0.2));
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 30px 20px;
-            width: 100%;
-            max-width: 580px;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--shadow-md);
-            margin-top: 10px;
-            position: relative;
-            overflow: hidden;
-            min-width: 0;
-        }
-
-        .tokens-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.6s ease;
-        }
-
-        .tokens-button:hover::before {
-            left: 100%;
-        }
-
-        .tokens-button:hover {
-            transform: translateY(-12px) scale(1.02);
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(236, 72, 153, 0.3));
-            box-shadow: 0 24px 48px rgba(245, 158, 11, 0.35);
-            border-color: rgba(245, 158, 11, 0.5);
-        }
-
-        .tokens-button:active {
-            transform: translateY(-6px) scale(0.98);
-        }
-
-        .tokens-button i {
-            font-size: 4rem;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, var(--accent), #fbbf24);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .tokens-text {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            overflow-wrap: break-word;
-            word-break: break-word;
-            text-align: center;
-        }
 
         /* Modales */
         .modal {
@@ -740,9 +674,7 @@
             .menu-button { padding: 30px 16px; }
             .menu-button i { font-size: 3rem; }
             .button-text { font-size: 1.3rem; }
-            .tokens-button { max-width: 100%; }
-            .tokens-button i { font-size: 3rem; }
-            .tokens-text { font-size: 1.3rem; }
+
             .modal-button { padding: 14px 16px; font-size: 1rem; gap: 12px; }
             .modal-button i { font-size: 1.4rem; min-width: 24px; }
             .install-button { padding: 16px 24px; font-size: 1.05rem; margin-top: 25px; }
@@ -750,7 +682,7 @@
         }
 
         @media (max-width: 520px) {
-            .tokens-button { width: 100%; max-width: 100%; }
+
             .buttons-container { gap: 14px; }
             .menu-button { padding: 25px 14px; }
             .menu-button i { font-size: 2.8rem; margin-bottom: 14px; }
@@ -766,7 +698,7 @@
                 gap: 14px;
             }
             .menu-button { width: 100%; max-width: 100%; }
-            .tokens-button { width: 100%; max-width: 100%; }
+
             .logo { width: 150px; height: 150px; margin-bottom: 28px; }
             .modal-content { padding: 20px 16px; }
             .modal-title { font-size: 1.5rem; }
@@ -793,9 +725,7 @@
             .menu-button { padding: 20px 12px; border-radius: 18px; }
             .menu-button i { font-size: 2.4rem; margin-bottom: 10px; }
             .button-text { font-size: 1.1rem; }
-            .tokens-button { padding: 22px 16px; border-radius: 18px; }
-            .tokens-button i { font-size: 2.4rem; margin-bottom: 10px; }
-            .tokens-text { font-size: 1.1rem; }
+
             .modal-button { padding: 12px 12px; font-size: 0.9rem; gap: 10px; border-radius: 12px; }
             .modal-button i { font-size: 1.2rem; min-width: 20px; }
             .auth-card { padding: 24px 16px; border-radius: 18px; }
@@ -981,10 +911,6 @@
             </div>
         </div>
 
-        <div class="tokens-button" id="tokensButton">
-            <i class="fas fa-key"></i>
-            <span class="tokens-text">Enlace a tokens</span>
-        </div>
 
         <button id="installButton" class="install-button" style="display: none;">
             <i class="fas fa-download"></i>
@@ -1205,7 +1131,7 @@
             const iesButton = document.getElementById('iesButton');
             const departamentoButton = document.getElementById('departamentoButton');
             const tecnologiaButton = document.getElementById('tecnologiaButton');
-            const tokensButton = document.getElementById('tokensButton');
+
             const iesModal = document.getElementById('iesModal');
             const departamentoModal = document.getElementById('departamentoModal');
             const tecnologiaModal = document.getElementById('tecnologiaModal');
@@ -1267,10 +1193,6 @@
                 document.body.classList.add('no-scroll');
             });
 
-            // Enlace directo para tokens
-            tokensButton.addEventListener('click', function() {
-                window.open('https://docs.google.com/document/d/1NS-M7Os3XIfosDZ5PojiwAdx7Q5BRebkoROPzuZf2vQ/edit?usp=sharing', '_blank');
-            });
 
             // Cerrar modales
             closeButtons.forEach(button => {
